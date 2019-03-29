@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PromoARC.StartUp;
 
 namespace PromoARC
 {
@@ -20,6 +21,19 @@ namespace PromoARC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+
+            // The follwing two lines may be unecessary
+            //services.Configure<SecurityConfig>(Configuration.GetSection("SecurityConfig"));
+            //services.Configure<JsonWebTokenConfig>(Configuration.GetSection("JsonWebTokenConfig"));
+
+            DependencyInjection.ConfigureServices(services, Configuration);
+
+            Cors.ConfigureServices(services);
+
+            Authentication.ConfigureServices(services, Configuration);
+
+            //here by default
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the React files will be served from this directory
